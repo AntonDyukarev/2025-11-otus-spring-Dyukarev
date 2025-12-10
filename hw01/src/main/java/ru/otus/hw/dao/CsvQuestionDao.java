@@ -22,7 +22,7 @@ public class CsvQuestionDao implements QuestionDao {
     public List<Question> findAll() {
         String questionsFileName = fileNameProvider.getTestFileName();
 
-        try (InputStream inputStream = getClass().getResourceAsStream("/" + questionsFileName);) {
+        try (InputStream inputStream = getClass().getResourceAsStream("/" + questionsFileName)) {
             if (Objects.isNull(inputStream)) {
                 String errorMessage = String.format("Could not find file with name %s", questionsFileName);
                 throw new QuestionReadException(errorMessage);
