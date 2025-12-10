@@ -1,27 +1,27 @@
 package ru.otus.hw.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.otus.hw.dao.QuestionDao;
 import ru.otus.hw.domain.Answer;
 import ru.otus.hw.domain.Question;
+import ru.otus.hw.exceptions.QuestionReadException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
-public class TestServiceTest {
+public class TestServiceImplTest {
 
     @Mock
-    QuestionDao questionDao;
+    private QuestionDao questionDao;
 
     @Mock
-    IOService ioService;
+    private IOService ioService;
 
     private TestService testService;
 
@@ -41,7 +41,7 @@ public class TestServiceTest {
     }
 
     @Test
-    public void test() {
+    public void successfulPrintsTest() {
         Mockito.when(questionDao.findAll())
                 .thenReturn(questions);
 
@@ -60,6 +60,14 @@ public class TestServiceTest {
             inOrder.verify(ioService)
                     .printLine("");
         }
+    }
+
+    @Test
+    public void questionReadExceptionTest() {
+        Mockito.when(questionDao.findAll())
+                .thenThrow(QuestionReadException.class);
+
+        Assertions.assertThrows(QuestionReadException.class, () -> testService.executeTest());
     }
 
     private void checkThatQuestionsHeaderIsPrinted(InOrder inOrder) {
