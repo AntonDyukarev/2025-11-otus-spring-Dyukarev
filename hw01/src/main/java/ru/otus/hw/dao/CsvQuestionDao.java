@@ -20,13 +20,7 @@ public class CsvQuestionDao implements QuestionDao {
 
     @Override
     public List<Question> findAll() {
-        String questionsFileName = fileNameProvider.getTestFileName();
-
-        try (InputStream inputStream = getClass().getResourceAsStream("/" + questionsFileName)) {
-            if (Objects.isNull(inputStream)) {
-                String errorMessage = String.format("Could not find file with name %s", questionsFileName);
-                throw new QuestionReadException(errorMessage);
-            }
+        try (InputStream inputStream = openTestFileAsStream()) {
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             return new CsvToBeanBuilder<QuestionDto>(inputStreamReader)
                     .withSkipLines(1)
@@ -40,5 +34,15 @@ public class CsvQuestionDao implements QuestionDao {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private InputStream openTestFileAsStream() {
+        String questionsFileName = fileNameProvider.getTestFileName();
+        InputStream inputStream = getClass().getResourceAsStream("/" + questionsFileName);
+        if (Objects.isNull(inputStream)) {
+            String errorMessage = String.format("Could not find file with name %s", questionsFileName);
+            throw new QuestionReadException(errorMessage);
+        }
+        return inputStream;
     }
 }
