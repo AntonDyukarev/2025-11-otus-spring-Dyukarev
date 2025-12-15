@@ -1,0 +1,103 @@
+package ru.otus.hw.service;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import ru.otus.hw.dao.QuestionDao;
+import ru.otus.hw.domain.Answer;
+import ru.otus.hw.domain.Question;
+import ru.otus.hw.exceptions.QuestionReadException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ExtendWith(MockitoExtension.class)
+public class TestServiceImplTest {
+
+    @Mock
+    private QuestionDao questionDao;
+
+    @Mock
+    private IOService ioService;
+
+    private TestService testService;
+
+    private List<Question> questions;
+
+    @BeforeEach
+    public void initTestService() {
+        testService = new TestServiceImpl(ioService, questionDao);
+    }
+
+    @BeforeEach
+    public void initQuestions() {
+        questions = List.of(
+                generateQuestion(1),
+                generateQuestion(2)
+        );
+    }
+
+    @Test
+    public void successfulPrintsTest() {
+        Mockito.when(questionDao.findAll())
+                .thenReturn(questions);
+
+        testService.executeTest();
+
+        InOrder inOrder = Mockito.inOrder(ioService, questionDao);
+
+        checkThatQuestionsHeaderIsPrinted(inOrder);
+
+        inOrder.verify(questionDao)
+                .findAll();
+
+        for (Question question : questions) {
+            checkThatQuestionTextIsPrinted(inOrder, question);
+            checkThatAnswerTextsArePrinted(inOrder, question);
+            inOrder.verify(ioService)
+                    .printLine("");
+        }
+    }
+
+    @Test
+    public void questionReadExceptionTest() {
+        Mockito.when(questionDao.findAll())
+                .thenThrow(QuestionReadException.class);
+
+        Assertions.assertThrows(QuestionReadException.class, () -> testService.executeTest());
+    }
+
+    private void checkThatQuestionsHeaderIsPrinted(InOrder inOrder) {
+        inOrder.verify(ioService)
+                .printLine("");
+        inOrder.verify(ioService)
+                .printFormattedLine("Please answer the questions below%n");
+    }
+
+    private void checkThatQuestionTextIsPrinted(InOrder inOrder, Question question) {
+        String questionText = question.text();
+        inOrder.verify(ioService).printLine(questionText);
+    }
+
+    private void checkThatAnswerTextsArePrinted(InOrder inOrder, Question question) {
+        List<Answer> answers = question.answers();
+
+        for (int i = 0; i < answers.size(); i++) {
+            int answerNumber = i + 1;
+            String answerText = answers.get(i).text();
+            inOrder.verify(ioService).printFormattedLine("  %s. %s", answerNumber, answerText);
+        }
+    }
+
+    private Question generateQuestion(int questionNumber) {
+        List<Answer> answers = new ArrayList<>();
+        answers.add(new Answer("Test answer " + questionNumber + "_01",true));
+        answers.add(new Answer("Test answer " + questionNumber + "_02",false));
+        answers.add(new Answer("Test answer " + questionNumber + "_03",false));
+
+        return new Question("Test question " + questionNumber, answers);
+    }
+}
