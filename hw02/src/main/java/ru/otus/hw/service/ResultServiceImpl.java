@@ -1,10 +1,14 @@
 package ru.otus.hw.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import ru.otus.hw.config.TestConfig;
 import ru.otus.hw.domain.TestResult;
 
 @RequiredArgsConstructor
+@Service
+@Qualifier
 public class ResultServiceImpl implements ResultService {
 
     private final TestConfig testConfig;
