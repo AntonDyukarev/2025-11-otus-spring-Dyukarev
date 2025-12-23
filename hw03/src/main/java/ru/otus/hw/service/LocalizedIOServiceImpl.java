@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
-@Service
+@Service("LocalizedIOService")
 public class LocalizedIOServiceImpl implements LocalizedIOService {
 
     private final LocalizedMessagesService localizedMessagesService;

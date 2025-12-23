@@ -1,4 +1,7 @@
 spring:
+  output:
+    ansi:
+      enabled: ALWAYS
   messages:
     baseName: messages
     encoding: UTF-8
@@ -6,7 +9,9 @@ spring:
     # Если false то будут браться сообщения из дефолтного файла, если true, то из файла соответствующего системной локали
     fallbackToSystemLocale: false
 test:
+  attemptsInputAnswerCount: 3
   rightAnswersCountToPass: 3
+#  locale: ru-RU
   locale: en-US
   fileNameByLocaleTag:
     ru-RU: questions_ru.csv
