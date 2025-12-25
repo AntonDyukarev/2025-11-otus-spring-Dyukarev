@@ -1,0 +1,9 @@
+# Добавить сюда своих вопросов. Эту строку надо пропустить при настройке CsvToBean (withSkipLines)
+Есть ли жизнь на Марсе?;Это науке пока не известно%true|Конечно. Красные (НЛО) это с Марса. А зеленые (НЛО) с Венеры%false|Точно нет%false
+Как нужно загружать ресурс из jar в Java?;ClassLoader#geResourceAsStream или ClassPathResource#getInputStream%true|ClassLoader#geResource#getFile + FileReader%false|Wingardium Leviosa%false
+Какой предпочтительный способ реакции на исключения?;@SneakyThrow%false|e.printStackTrace()%false|Проброс дальше с предварительным оборачиванием в бизнес-исключение (например, QuestionReadException)%true|Игнорирование исключения%false
+Что означает буква “S” в аббревиатуре SOLID?;Single Responsibility Principle%true|Simple invertibility Principle%false|Super readability Principle%false|Somebody’s responsibility Principle%false
+Что означает буква “O” в аббревиатуре SOLID?;Open for Extensions, Closed for Explanations Principle%false|Open for Bugs, Closed for Refactoring Principle%false|Open/Closed Principle%true
+Что означает буква “L” в аббревиатуре SOLID?;Liskov Suspicion Principle%false|Liskov Sadness Principle%false|Liskov Substitution Principle%true|Liskov Stacktrace Principle%false
+Что означает буква “I” в аббревиатуре SOLID?;Infinite Segregation Principle%false|Interface Segregation Principle%true|Interface Shrug Principle%false
+Что означает буква “D” в аббревиатуре SOLID?;Dependency Instagram Principle%false|Dependency Inversion Principle%true|Dumb Injection Principle%false|Dependency Insanity Principle%false

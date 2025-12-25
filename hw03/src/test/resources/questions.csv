@@ -1,0 +1,2 @@
+# Добавить сюда своих вопросов. Эту строку надо пропустить при настройке CsvToBean (withSkipLines)
+Test question text;Wrong answer%false|Correct answer%true
